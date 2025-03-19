@@ -12,5 +12,5 @@ Exercise for Fake Generative Chatbot
 
 1. **Clona il repository**:
    ```bash
-   git clone https://github.com/tuo-utente/tuo-repository.git
-   cd tuo-repository
+   git clone https://github.com/giuliaSan/generative-chatbot
+   cd generative-chatbot
