@@ -27,7 +27,7 @@ const ChatbotPage: React.FC = () => {
         { query: question }, 
         {
           headers: {
-            'Content-Type': 'application/json',  // optional but ensures proper content-type
+            'Content-Type': 'application/json',
           }
         }
       );
@@ -43,7 +43,7 @@ const ChatbotPage: React.FC = () => {
   const fetchDocuments = async () => {
     try {
       const res = await axios.get("http://localhost:8000/documents");
-      setDocuments(res.data.documents);  // make sure the backend returns an array in `documents`
+      setDocuments(res.data.documents); 
       setShowDocuments(true);
     } catch (error) {
       console.error("Error fetching documents:", error);
