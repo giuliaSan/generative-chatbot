@@ -24,14 +24,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Simulated cache dictionary
 cache: Dict[str, str] = {}
 
-# Request model
 class QueryRequest(BaseModel):
     query: str
 
-# Response model
 class QueryResponse(BaseModel):
     response: str
 
@@ -49,42 +46,35 @@ documents_data = [
     {"title": "Doc 3", "content": "Un altro esempio di documento interessante..."},
 ]
 
-# Simulate reading from the cache with async wait
+# Simulate reading from the cache 
 async def get_from_cache(query: str) -> str:
     await asyncio.sleep(2)  # Simulate 2 seconds wait
     return cache.get(query)
 
-# Simulate writing to the cache with async wait
+# Simulate writing to the cache
 async def set_to_cache(query: str, response: str):
     await asyncio.sleep(2)  # Simulate 2 seconds wait
     cache[query] = response
 
-# Simulate AI response generation
+# Simulate AI response
 def generate_ai_response(query: str) -> str:
     return f"Certo che conosco {query}! Puoi approfondire con questi documenti..."
 
-
-# Root endpoint
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
-# Generate response endpoint
 @app.post("/generate", response_model=QueryResponse)
 async def generate(query: QueryRequest):
-    # Check if the response is already in cache
     cached_response = await get_from_cache(query.query)
     if cached_response:
-        # If found in cache, return the cached response
         return QueryResponse(response=cached_response)
     
-    # Otherwise, generate a new response and save it to cache
     response = generate_ai_response(query.query)
     await set_to_cache(query.query, response)
     return QueryResponse(response=response)
 
 @app.get("/documents", response_model=DocumentsResponse)
 async def get_documents():
-    # Return hardcoded documents
     return DocumentsResponse(documents=documents_data)
 
